@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pro/data.dart';
 import 'package:flutter_pro/second.dart';
 
 
@@ -13,10 +14,14 @@ class Home  extends StatefulWidget {
 
 class _HomeState extends State < Home > {
    double _currentSliderValue = 181 ;
-   String height  = '181'; 
+   int height  = 150; 
    List<bool> isSelected = [true, false]; 
-  List<IconData> iconList = [Icons.male, Icons.female ];
-  List<String> textList = ['MALE', 'FEMALE'];
+    List<IconData> iconList = [Icons.male, Icons.female ];
+     List<String> textList = ['MALE', 'FEMALE'];
+     int weight = 60 ;
+     int age = 25 ;
+    late double BMI ;
+    
    
 
 
@@ -118,7 +123,7 @@ class _HomeState extends State < Home > {
                            onChanged: ( value) {
                           setState(() {
                          _currentSliderValue = value;
-                         height = _currentSliderValue.round().toString();
+                         height = _currentSliderValue.round();
                             });
                              },
                             ),
@@ -148,20 +153,31 @@ class _HomeState extends State < Home > {
                          Column(children: <Widget>[
                           SizedBox(height: 15,),
                           Text('WEIGHT', style: TextStyle(fontSize: 15,color: Colors.grey),),
-                          Text('60', style: TextStyle(fontSize: 40,color: Colors.white,fontWeight: FontWeight.w900),),
+                          Text('${weight}', style: TextStyle(fontSize: 40,color: Colors.white,fontWeight: FontWeight.w900),),
                           
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                                FloatingActionButton(
                                backgroundColor: Color.fromARGB(255, 93, 95, 110),
+                                heroTag: UniqueKey(),
                                 mini: true,
-                                onPressed: (){},
+                                onPressed: (){
+                                    setState(() {
+                                      weight-=1 ;
+                                    });
+                                },
                                 child: Icon(Icons.remove,), ),
                                 FloatingActionButton( 
+                                heroTag: UniqueKey(),
                                 backgroundColor: Color.fromARGB(255, 93, 95, 110),
                                 mini: true,
-                                onPressed: (){},
+                                onPressed: (){
+                                    setState(() {
+                                      weight+=1 ;
+                                    });
+                                    
+                                },
                                 child: Icon(Icons.add,),
                           ),
                           ],
@@ -183,7 +199,7 @@ class _HomeState extends State < Home > {
                         child: Column(children: <Widget>[
                           SizedBox(height: 15,),
                           Text('AGE', style: TextStyle(fontSize: 15,color: Colors.grey),),
-                          Text('25', style: TextStyle(fontSize: 40,color: Colors.white,fontWeight: FontWeight.w900),),
+                          Text('${age}', style: TextStyle(fontSize: 40,color: Colors.white,fontWeight: FontWeight.w900),),
                           
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -191,12 +207,22 @@ class _HomeState extends State < Home > {
                                FloatingActionButton(
                                backgroundColor: Color.fromARGB(255, 93, 95, 110),
                                 mini: true,
-                                onPressed: (){},
+                                heroTag: UniqueKey(),
+                                onPressed: (){
+                                  setState(() {
+                                    age-=1 ;
+                                  });
+                                },
                                 child: Icon(Icons.remove,), ),
                                 FloatingActionButton( 
                                 backgroundColor: Color.fromARGB(255, 93, 95, 110),
+                                heroTag: UniqueKey(),
                                 mini: true,
-                                onPressed: (){},
+                                onPressed: (){
+                                  setState(() {
+                                    age+=1 ;
+                                  });
+                                },
                                 child: Icon(Icons.add,),
                           ),
                           ],
@@ -215,8 +241,12 @@ class _HomeState extends State < Home > {
                 child: ElevatedButton(
                   
                   onPressed: (){
-                    // Navigator.pushNamed(context, '/second');
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => Second(),));
+                     Navigator.pushNamed(context, '/second' ,
+                      arguments:
+                       Data(result: BMI_CALCULAROT(height,weight ), state:BMI_State(BMI_CALCULAROT(height, weight),) ,
+                        text_result: BMI_Text(BMI_CALCULAROT(height, weight),), text: text(BMI_CALCULAROT(height, weight),),
+                        color: color(BMI_CALCULAROT(height, weight)),),);
+                   // Navigator.push(context, MaterialPageRoute(builder: (context) => Second(),));
                   }, 
                 child: Text('CALCULATE',style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold,),
                 ),
@@ -231,4 +261,119 @@ class _HomeState extends State < Home > {
       
               );    
   }
+  
+  BMI_CALCULAROT(int height, int weight) {
+    double BMI ,bmi;
+  double height_m = height/100 ;
+  
+    bmi = weight / (height_m*height_m);
+//BMI = bmi.double(bmi.toStringAsFixed(2));
+String inString = bmi.toStringAsFixed(1);
+BMI = double.parse(inString);
+
+  return BMI ;
+  }
+
+  BMI_State (double BMI){
+  
+  String text = '';
+  
+  if (BMI < 18.5)
+  {
+    text = 'UNDERWEIGHT';
+  }
+  else if(BMI>18.5 && BMI < 25){
+    text = 'NORMAL';
+  }
+  else if (BMI >25 && BMI <30 )
+  {
+   text = 'OVERWEIGHT';
+  }
+else if ( BMI >30 )
+  {
+   text = 'OBESE';
+  }
+
+  return text ;
+ }
+   BMI_Text (double BMI){
+  
+  String text = '';
+  
+  if (BMI < 18.5)
+  {
+    text = 'You are underweight.';
+  }
+  else if(BMI>18.5 && BMI < 25){
+    text = 'You have a normal body weight.';
+  }
+  else if (BMI >25 && BMI <30 )
+  {
+   text = 'You are overweight.';
+  }
+else if ( BMI >30 )
+  {
+   text = 'You are in the obese range.';
+  }
+
+  return text ;
+ }
+
+ text (double BMI){
+  
+  String text = '';
+  
+  if (BMI < 18.5)
+  {
+    text = 'Gain some weight';
+  }
+  else if(BMI>18.5 && BMI < 25){
+    text = 'Good job!';
+  }
+  else if (BMI >25 && BMI <30 )
+  {
+   text = 'You need to exercise more';
+  }
+else if ( BMI >30 )
+  {
+   text = 'Your health is in danger!';
+  }
+
+  return text ;
+ }
+
+  color (double BMI){
+  
+  Color color ;
+  var x ;
+  
+  if (BMI < 18.5)
+  {
+    color = Colors.yellow ;
+    x= color ;
+  }
+  else if(BMI>18.5 && BMI < 25){
+    color = Color.fromARGB(255, 94, 198, 163) ;
+    x = color ;
+  }
+  else if (BMI >25 && BMI <30 )
+  {
+   color = Colors.orange ;
+   x = color ;
+  }
+else if ( BMI >30 )
+  {
+   color = Colors.red ;
+   x = color ;
+  }
+
+  return x ;
+ }
+
 }
+
+ 
+  
+
+ 
+

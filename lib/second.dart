@@ -1,9 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pro/data.dart';
 
-class Second extends StatelessWidget {
+class Second extends StatefulWidget {
+ 
+  @override
+  _HomeState  createState() => _HomeState();
+  
+}
+
+
+
+class _HomeState extends State < Second > {
+   
+    
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+
+    // Data d =ModalRoute.of(context)!.settings.arguments;
+   //Data data =  ModalRoute.of(context).settings.arguments;
+
+   final args = ModalRoute.of(context)!.settings.arguments as Data;
+
+      return Scaffold(
       backgroundColor: Color.fromARGB(255, 36, 38, 59),
       body:  
       
@@ -29,12 +47,12 @@ class Second extends StatelessWidget {
                            child: Column (
                             children: <Widget>[
                               SizedBox(height: 80,),
-                              Text('NORMAL',style: TextStyle(fontSize: 20,color: Color.fromARGB(255, 94, 198, 163),fontWeight: FontWeight.bold),),
+                              Text(args.state,style: TextStyle(fontSize: 20,color: args.color,fontWeight: FontWeight.bold),),
                               SizedBox(height: 80,),
-                              Text('19.2',style: TextStyle(fontSize: 80,fontWeight: FontWeight.w900,color: Colors.white),),
+                              Text('${args.result}',style: TextStyle(fontSize: 60,fontWeight: FontWeight.w900,color: Colors.white),),
                               SizedBox(height:80 ,),
-                              Text('You have a normal body weight.',style: TextStyle(color: Colors.white,fontSize: 22),),
-                              Text('Good job !',style: TextStyle(color: Colors.white,fontSize: 22),),
+                              Text(args.text_result,style: TextStyle(color: Colors.white,fontSize: 22),),
+                              Text(args.text,style: TextStyle(color: Colors.white,fontSize: 22),),
                         ],
                         ),
                          ), 
@@ -43,9 +61,10 @@ class Second extends StatelessWidget {
                    ),
                    Container( width : double.infinity ,height: 70 ,
                 child: ElevatedButton(
+
                   
                   onPressed: (){
-                   // Navigator.pushNamed(context, '/');
+                    Navigator.of(context).pop();
                   }, 
                 child: Text('RE-CALCULATE',style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold,),
                 ),
@@ -61,5 +80,7 @@ class Second extends StatelessWidget {
         
       
     );
+
+   }
+  
   }
-}

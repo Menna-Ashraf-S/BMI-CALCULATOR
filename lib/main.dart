@@ -8,12 +8,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Home(),
-      // initialRoute: '/',
-      // routes: <String,WidgetBuilder>{
-      //   '/' :(context) => Home() ,
-      //   '/second' :(context) => Second(),
-      // },
+      // home: Second() ,
+      initialRoute: '/',
+      routes: <String,WidgetBuilder>{
+        '/' :(context) => Home() ,
+        '/second' :(context) => Second(),
+      },
     );
   }
 }
